@@ -36,15 +36,42 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(result.primary_key, "email")
         self.assertEqual(result.date_format, "%Y-%m-%d")
 
-    # TODO - finish these tests
     def test_missing_file(self) -> None:
-        raise NotImplementedError
+        path = "nonexistent_file.json"
+        with self.assertRaises(SystemExit):
+            load_config(path)
 
     def test_invalid_json(self) -> None:
-        raise NotImplementedError
+        # creating a malformed dict for the json
+        path = os.path.join(self.temp_dir, "rules.json")
+        with open(path, "w") as f:
+            f.write("this is not json")
+        with self.assertRaises(SystemExit):
+            load_config(path)
 
     def test_missing_key(self) -> None:
-        raise NotImplementedError
+        path = self.write_temp_rules_file(
+            {
+                "primary_shmimary": "email",
+                "mandatory_shmandatory": ["first_name", "last_name", "email"],
+                "date_column": "date_of_birth",
+                "date_format": "%Y-%m-%d",
+                "email_column": "email",
+            }
+        )
+        with self.assertRaises(SystemExit):
+            load_config(path)
 
     def test_extra_keys_allowed(self) -> None:
-        raise NotImplementedError
+        path = self.write_temp_rules_file(
+            {
+                "primary_key": "email",
+                "mandatory_columns": ["first_name", "last_name", "email"],
+                "date_column": "date_of_birth",
+                "date_format": "%Y-%m-%d",
+                "email_column": "email",
+                "extra_column": "extra",
+            }
+        )
+        result = load_config(path)
+        self.assertEqual(result.primary_key, "email")
