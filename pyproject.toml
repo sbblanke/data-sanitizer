@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=70"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "data-sanitizer"
+version = "0.1.0"
+description = "CLI tool that cleans CSV files by removing duplicates and validating data"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[dependency-groups]
+dev = [
+    "setuptools>=70",
+    "ruff>=0.15.9",
+    "coverage>=7.0",
+    "data-sanitizer",
+]
+
+[tool.mypy]
+mypy_path = "src"
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.uv.workspace]
+members = [
+    ".",
+]
+
+[tool.uv.sources]
+data-sanitizer = { workspace = true, editable = true }

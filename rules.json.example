@@ -1,0 +1,7 @@
+{
+    "primary_key": "email",
+    "mandatory_columns": ["first_name", "last_name", "email"],
+    "date_column": "date_of_birth",
+    "date_format": "%Y-%m-%d",
+    "email_column": "email"
+}
