@@ -3,7 +3,6 @@ import tempfile
 import os
 import json
 
-from sanitizer.models import Config
 from sanitizer.config import load_config
 
 
