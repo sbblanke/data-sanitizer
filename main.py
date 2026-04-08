@@ -6,7 +6,9 @@ from sanitizer.validators.date import DateValidator
 from sanitizer.validators.email import EmailValidator
 from sanitizer.duplicate import DuplicateChecker
 from sanitizer.models import SanitizeResult
-from sanitizer.writer import write_clean_csv, write_rejected_csv
+from sanitizer.writer import write_clean_csv, write_rejected_csv, setup_audit_log
+
+import logging
 
 
 def print_summary(result: SanitizeResult, input_path: str, dry_run: bool) -> None:
@@ -23,11 +25,19 @@ def print_summary(result: SanitizeResult, input_path: str, dry_run: bool) -> Non
     print(f"  Duplicates:  {result.duplicate_count}")
     print(f"  Invalid:     {result.invalid_count}")
 
+    logging.info(
+        f"Run complete. Total: {result.total_input}, Cleaned: {len(result.cleaned_rows)}, Rejected: {len(result.rejected_rows)} (Duplicates: {result.duplicate_count}, Invalid: {result.invalid_count})"
+    )
+
 
 def main():
+
     args = parse_args()
     config = load_config(args.rules)
     rows = read_csv(args.input_file, config)
+
+    setup_audit_log(args.input_file.replace(".csv", "_audit_log.log"))
+    logging.info(f"Starting sanitize run on {args.input_file}")
 
     validators = []
     if args.date or args.all:

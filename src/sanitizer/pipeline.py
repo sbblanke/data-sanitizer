@@ -2,6 +2,7 @@
 
 from sanitizer.duplicate import DuplicateChecker
 from sanitizer.models import Row, SanitizeResult
+import logging
 
 
 class Pipeline:
@@ -20,6 +21,9 @@ class Pipeline:
             if not result.is_valid:
                 rejected.append((row, result.rejection_reason))
                 duplicate_count += 1
+                logging.info(
+                    f"Row {row.line_number} rejected: {result.rejection_reason}"
+                )
                 continue
 
             all_valid = True
@@ -29,6 +33,9 @@ class Pipeline:
                     all_valid = False
                     rejected.append((row, result.rejection_reason))
                     invalid_count += 1
+                    logging.info(
+                        f"Row {row.line_number} rejected: {result.rejection_reason}"
+                    )
                     break
             if all_valid:
                 cleaned.append(row)

@@ -2,7 +2,6 @@ from unittest.mock import patch
 import unittest
 import csv
 import os
-import sys
 import tempfile
 
 from main import main
