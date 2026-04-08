@@ -7,7 +7,7 @@ import csv
 import logging
 
 from sanitizer.models import Row
-from sanitizer.writer import write_clean_csv, write_rejected_csv, setup_audit_log
+from sanitizer.writer import write_cleaned_csv, write_rejected_csv, setup_audit_log
 
 
 class TestWriter(unittest.TestCase):
@@ -25,13 +25,13 @@ class TestWriter(unittest.TestCase):
             line_number=line_number,
         )
 
-    def test_write_clean_csv(self) -> None:
+    def test_write_cleaned_csv(self) -> None:
         rows = [
             self.make_row("test@test.com", 1),
             self.make_row("example@example.com", 2),
         ]
         path = os.path.join(self.temp_dir, "cleaned.csv")
-        write_clean_csv(path, rows)
+        write_cleaned_csv(path, rows)
         with open(path, newline="") as f:
             written = list(csv.DictReader(f))
 
@@ -39,10 +39,10 @@ class TestWriter(unittest.TestCase):
         self.assertEqual(written[0]["email"], "test@test.com")
         self.assertEqual(written[1]["email"], "example@example.com")
 
-    def test_write_clean_csv_empty(self) -> None:
+    def test_write_cleaned_csv_empty(self) -> None:
         rows: list = []  # create empty list
         path = os.path.join(self.temp_dir, "cleaned.csv")
-        write_clean_csv(path, rows)
+        write_cleaned_csv(path, rows)
         self.assertFalse(os.path.exists(path))
 
     def test_write_rejected_csv(self) -> None:

@@ -6,7 +6,7 @@ import logging
 from sanitizer.models import Row
 
 
-def write_clean_csv(path: str, rows: list[Row]) -> None:
+def write_cleaned_csv(path: str, rows: list[Row]) -> None:
     if not rows:
         return
     with open(path, "w", newline="") as f:
@@ -28,8 +28,8 @@ def write_rejected_csv(path: str, rejected: list[tuple[Row, str]]) -> None:
 
 
 def setup_audit_log(path: str) -> None:
-    logging.basicConfig(
-        filename=path,
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-    )
+    handler = logging.FileHandler(path)
+    handler.setLevel(logging.INFO)
+    handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+    logging.getLogger().setLevel(logging.INFO)
+    logging.getLogger().addHandler(handler)

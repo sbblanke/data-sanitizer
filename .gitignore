@@ -12,5 +12,9 @@ wheels/
 # Rules
 rules.json
 
-# CSV files
+# Coverage
+.coverage
+
+# Outputs
 *.csv
+*.log

@@ -3,7 +3,7 @@
 import unittest
 
 from sanitizer.duplicate import DuplicateChecker
-from sanitizer.models import Row, ValidationResult
+from sanitizer.models import Row
 
 
 class TestDuplicate(unittest.TestCase):
