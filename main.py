@@ -6,7 +6,7 @@ from sanitizer.validators.date import DateValidator
 from sanitizer.validators.email import EmailValidator
 from sanitizer.duplicate import DuplicateChecker
 from sanitizer.models import SanitizeResult
-from sanitizer.writer import write_clean_csv, write_rejected_csv, setup_audit_log
+from sanitizer.writer import write_cleaned_csv, write_rejected_csv, setup_audit_log
 
 import logging
 
@@ -52,7 +52,7 @@ def main():
     if not args.dry_run:
         clean_output_path = args.input_file.replace(".csv", "_cleaned.csv")
         rejected_output_path = args.input_file.replace(".csv", "_rejected.csv")
-        write_clean_csv(clean_output_path, result.cleaned_rows)
+        write_cleaned_csv(clean_output_path, result.cleaned_rows)
         write_rejected_csv(rejected_output_path, result.rejected_rows)
 
     print_summary(result, args.input_file, args.dry_run)
